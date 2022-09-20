@@ -8,9 +8,13 @@
 
 int  compare_strings (const void *first_str, const void *second_str);
 
-int  num_of_strings  (char *buf, int buf_size);
+int  num_of_strings (char *buf, int buf_size);
 
-void split_strings   (char *buf, int buf_size, struct String* Text);
+int  size_of_file (FILE *file);
+
+int  file_reader (char *buf, int buf_size, FILE *file);
+
+void split_strings (char *buf, int buf_size, struct String* Text);
 
 //-----------------------------------------------------------------------------
 
@@ -28,22 +32,17 @@ int main ()
     FILE   *file  = fopen ("hamlet.txt", "rb");
     assert (file != NULL);
 
-    struct stat buffer;
-    fstat (fileno (file), &buffer);
+    int   buf_size = size_of_file (file);
 
-    int   buf_size = buffer.st_size;
     char *buf = (char*) calloc (buf_size, sizeof (char));
 
-    fread (buf, sizeof (char), buf_size, file);
+    file_reader (buf, buf_size, file);
 
-    int text_size = num_of_strings (buf, buf_size);
-    struct String Text[text_size];
+    struct String Text[11];
 
     split_strings (buf, buf_size, Text);
 
-    printf ("%s %d\n", Text[0].str, Text[0].str_len);
-
-    fclose (file);
+    printf ("\n%s %d\n", Text[0].str, Text[0].str_len);
 }
 
 //-----------------------------------------------------------------------------
@@ -115,3 +114,26 @@ void split_strings (char *buf, int buf_size, struct String* Text)
 
 //-----------------------------------------------------------------------------
 
+int size_of_file (FILE *file)
+{
+    struct stat buffer;
+    fstat (fileno (file), &buffer);
+
+    return buffer.st_size;
+
+    fclose (file);
+}
+
+//-----------------------------------------------------------------------------
+
+int file_reader (char *buf, int buf_size, FILE *file)
+{
+    fread (buf, sizeof (char), buf_size, file);
+    printf ("%s", buf);
+
+    int text_size = num_of_strings (buf, buf_size);
+
+    return text_size;
+}
+
+//-----------------------------------------------------------------------------
