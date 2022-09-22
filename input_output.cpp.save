@@ -1,0 +1,57 @@
+#include "input_output.h"
+
+//-----------------------------------------------------------------------------
+
+int num_of_strings (char *buf, int buf_size)
+{
+    int string_counter = 0;
+
+    for(int i = 0; i < buf_size; i++)
+    {
+        if(buf[i] == '\n')
+        {
+            string_counter++;
+        }
+    }
+
+    return string_counter + 1;
+}
+
+//-----------------------------------------------------------------------------
+
+int size_of_file (FILE *file)
+{
+    struct stat buffer;
+    fstat (fileno (file), &buffer);
+
+    return buffer.st_size;
+
+    fclose (file);
+}
+
+//-----------------------------------------------------------------------------
+
+int file_reader (char *buf, int buf_size, FILE *file)
+{
+    fread (buf, sizeof (char), buf_size, file);
+    *(buf + buf_size) = '\0';
+
+    int text_size = num_of_strings (buf, buf_size);
+
+    return text_size;
+}
+
+//-----------------------------------------------------------------------------
+
+int file_printer (char *buf, int num, int *string_num)
+{
+    FILE   *file1  = fopen ("hamlet1.txt", "rb");
+    assert (file1 != NULL);
+    
+    for(int j = 0; j < num; j++)
+    {
+        fprintf (file1, "\n%s", buf + *(string_num + j));
+    }
+}
+
+//-----------------------------------------------------------------------------
