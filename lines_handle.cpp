@@ -16,16 +16,35 @@ int compare_strings (const void *first_i, const void *second_i)
 
 //-----------------------------------------------------------------------------
 
+// buffer
 int line_detector (char *buffer_in, int buf_size, int *string_num)
 {
-    int kol = 0;
+
+    //
+    // int cur_len = 0;
+
+    // for (int i = 0; i < buf_size; i++)
+    // {
+    //      if (buffer[i] == '\n' || ...) {
+    //
+    //       buffer[i] = '\0';
+    //       set to begin ... - cur_len;
+    //       cur_len = 0;
+    //
+    // }
+    //   cur_len++;
+    //
+
+    int kol = 0; // num_???
     int posit = 0;
 
     for(int i = 0; i <= buf_size; i++)
     {
         if(*(buffer_in + i) == '\n' || *(buffer_in + i) == '\r')
         {
-            if(*(buffer_in + i - 1) != '\n' && *(buffer_in + i - 1) != '\r' && *(buffer_in + i - 1) != '\0')
+            if(*(buffer_in + i - 1) != '\n' &&
+               *(buffer_in + i - 1) != '\r' &&
+               *(buffer_in + i - 1) != '\0')
             {
                 *(string_num + kol) = posit;
                 posit = i + 1;
@@ -44,7 +63,9 @@ int line_detector (char *buffer_in, int buf_size, int *string_num)
         {
             if(i == buf_size)
             {
-                if(*(buffer_in + i - 1) != '\n' && *(buffer_in + i - 1) != '\r' && *(buffer_in + i - 1) != '\0')
+                if(*(buffer_in + i - 1) != '\n' &&
+                   *(buffer_in + i - 1) != '\r' &&
+                   *(buffer_in + i - 1) != '\0')
                 {
                     *(string_num + kol) = posit;
                 }

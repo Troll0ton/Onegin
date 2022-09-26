@@ -8,13 +8,6 @@
 extern char *buf;
 
 //-----------------------------------------------------------------------------
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <sys\stat.h>
-
-//-----------------------------------------------------------------------------
 
 int compare_strings (const void *first_i, const void *second_i);
 

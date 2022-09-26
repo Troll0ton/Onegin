@@ -3,6 +3,9 @@
 
 //-----------------------------------------------------------------------------
 
+// global uninitialized???
+
+
 char *buf;
 
 //-----------------------------------------------------------------------------
@@ -12,13 +15,17 @@ int main ()
     FILE   *file  = fopen ("hamlet.txt", "rb");
     assert (file != NULL);
 
-    int   buf_size = size_of_file (file) + 1;
+    int buf_size = size_of_file (file) + 1;
 
     buf = (char*) calloc (buf_size, sizeof (char));
 
     file_reader (buf, buf_size, file);
 
     int *string_num = (int*) calloc (num_of_strings (buf, buf_size), sizeof (int));
+
+    // char* strings[] = {};
+    // strings[0] -----> asdgdsagsdgsdgsdf\n
+    // strings[1] -----> gagsdgsdgdsagasg\n
 
     int num = line_detector (buf, buf_size, string_num);
 

@@ -19,14 +19,17 @@ int num_of_strings (char *buffer_in, int buf_size)
 
 //-----------------------------------------------------------------------------
 
+// ??
 int size_of_file (FILE *file)
 {
-    struct stat buffer;
+    struct stat file_stat = {0}; // ???
+
     fstat (fileno (file), &buffer);
 
     return buffer.st_size;
+    // ??
 
-    fclose (file);
+    // ? fclose (file);
 }
 
 //-----------------------------------------------------------------------------
@@ -34,6 +37,7 @@ int size_of_file (FILE *file)
 int file_reader (char *buffer_in, int buf_size, FILE *file)
 {
     fread (buffer_in, sizeof (char), buf_size, file);
+
     *(buffer_in + buf_size) = '\0';
 
     int text_size = num_of_strings (buffer_in, buf_size);
@@ -43,6 +47,7 @@ int file_reader (char *buffer_in, int buf_size, FILE *file)
 
 //-----------------------------------------------------------------------------
 
+// ??
 int file_printer (char *buffer_in, int num, int *string_num)
 {
     FILE   *file1  = fopen ("hamlet1.txt", "w+");
