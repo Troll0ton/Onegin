@@ -14,14 +14,16 @@ int point_lines_Ctor (char *buffer, int buffer_size, char* *pointer_line);
 
 int compare_strings (const void *first_i, const void *second_i);
 
+int num_of_strings (char *file_buffer, int buf_size);
+
 //-----------------------------------------------------------------------------
 
-/*struct Line
+struct Line
 {
     char *Pbegin_line;
 
     int line_length;
-};*/
+};
 
 //-----------------------------------------------------------------------------
 
@@ -36,9 +38,9 @@ int main ()
 
     file_reader (file_buffer, buffer_size, file);
 
-    char *pointer_line[100] = {0};
+    int num_of_lines = num_of_strings (file_buffer, buffer_size);
 
-    int num_of_lines = point_lines_Ctor (file_buffer, buffer_size, pointer_line);
+    struct Line *Text = (struct Line*) calloc (num_of_strings, sizeof (struct Line));
 
     qsort (pointer_line, num_of_lines, sizeof (char*), &compare_strings);
 
@@ -135,4 +137,22 @@ int compare_strings (const void *first_i, const void *second_i)
 }
 
 //-----------------------------------------------------------------------------
+
+int num_of_strings (char *file_buffer, int buf_size)
+{
+    int string_counter = 0;
+
+    for(int i = 0; i < buf_size; i++)
+    {
+        if(file_buffer[i] == '\n')
+        {
+            string_counter++;
+        }
+    }
+
+    return string_counter + 1;
+}
+
+//-----------------------------------------------------------------------------
+
 
