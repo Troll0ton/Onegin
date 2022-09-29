@@ -5,10 +5,6 @@
 
 //-----------------------------------------------------------------------------
 
-extern char *buf;
-
-//-----------------------------------------------------------------------------
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,9 +13,19 @@ extern char *buf;
 
 //-----------------------------------------------------------------------------
 
-int compare_strings (const void *first_i, const void *second_i);
+struct Line
+{
+// P?
+    char *Pbegin_line;
 
-int line_detector (char *buf, int buf_size, int *string_num);
+    int line_lenght;
+};
+
+//-----------------------------------------------------------------------------
+
+int compare_strings  (const void *first_p, const void *second_p);
+
+int point_lines_Ctor (char *buffer, int buffer_size, struct Line *Text);
 
 //-----------------------------------------------------------------------------
 

@@ -2,13 +2,13 @@
 
 //-----------------------------------------------------------------------------
 
-int num_of_strings (char *buf, int buf_size)
+int num_of_strings (char *file_buffer, int buffer_size)
 {
     int string_counter = 0;
 
-    for(int i = 0; i < buf_size; i++)
+    for(int i = 0; i < buffer_size; i++)
     {
-        if(buf[i] == '\n')
+        if(*(file_buffer + i) == '\n')
         {
             string_counter++;
         }
@@ -19,39 +19,41 @@ int num_of_strings (char *buf, int buf_size)
 
 //-----------------------------------------------------------------------------
 
-int size_of_file (FILE *file)
+int file_total_lenght (FILE *file)
 {
-    struct stat buffer;
-    fstat (fileno (file), &buffer);
+    struct stat file_stat = {0};
 
-    return buffer.st_size;
+    fstat (fileno (file), &file_stat);
 
-    fclose (file);
+    return (file_stat.st_size + 1);
 }
 
 //-----------------------------------------------------------------------------
 
-int file_reader (char *buf, int buf_size, FILE *file)
+int file_reader (char *file_buffer, int buffer_size, FILE *file)
 {
-    fread (buf, sizeof (char), buf_size, file);
-    *(buf + buf_size) = '\0';
+    fread (file_buffer, sizeof (char), buffer_size, file);
 
-    int text_size = num_of_strings (buf, buf_size);
+    *(file_buffer + buffer_size - 1) = '\0';
 
-    return text_size;
+    return 0;
 }
 
 //-----------------------------------------------------------------------------
 
-int file_printer (char *buf, int num, int *string_num)
+int file_printer (struct Line *Text, int num_of_lines)
 {
-    FILE   *file1  = fopen ("hamlet1.txt", "rb");
+    FILE   *file1  = fopen ("hamlet1.txt", "w+");
     assert (file1 != NULL);
-    
+
     for(int j = 0; j < num; j++)
     {
-        fprintf (file1, "\n%s", buf + *(string_num + j));
+        fprintf (file1, "\n%s", buffer_in + *(string_num + j));
     }
+
+    fclose (file1);
+
+    return 0;
 }
 
 //-----------------------------------------------------------------------------

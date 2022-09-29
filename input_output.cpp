@@ -2,13 +2,13 @@
 
 //-----------------------------------------------------------------------------
 
-int num_of_strings (char *buffer_in, int buf_size)
+int num_of_strings (char *file_buffer, int buffer_size)
 {
     int string_counter = 0;
 
-    for(int i = 0; i < buf_size; i++)
+    for(int i = 0; i < buffer_size; i++)
     {
-        if(buffer_in[i] == '\n')
+        if(file_buffer[i] == '\n')
         {
             string_counter++;
         }
@@ -19,46 +19,44 @@ int num_of_strings (char *buffer_in, int buf_size)
 
 //-----------------------------------------------------------------------------
 
-// ??
-int size_of_file (FILE *file)
+// file_size
+int file_total_lenght (FILE *file)
 {
-    struct stat file_stat = {0}; // ???
+    struct stat file_stat = {0};
 
-    fstat (fileno (file), &buffer);
+    fstat (fileno (file), &file_stat);
 
-    return buffer.st_size;
     // ??
-
-    // ? fclose (file);
+    return file_stat.st_size + 1;
 }
 
 //-----------------------------------------------------------------------------
 
-int file_reader (char *buffer_in, int buf_size, FILE *file)
+int file_reader (char *file_buffer, int buffer_size, FILE *file)
 {
-    fread (buffer_in, sizeof (char), buf_size, file);
+    fread (file_buffer, sizeof (char), buffer_size, file);
 
-    *(buffer_in + buf_size) = '\0';
+    *(file_buffer + buffer_size - 1) = '\0';
 
-    int text_size = num_of_strings (buffer_in, buf_size);
-
-    return text_size;
+    return 0;
 }
 
 //-----------------------------------------------------------------------------
 
-// ??
-int file_printer (char *buffer_in, int num, int *string_num)
+int file_printer (struct Line *Text, int num_of_lines) //Close exit file!
 {
+    printf ("Cool!");
+    /*
     FILE   *file1  = fopen ("hamlet1.txt", "w+");
     assert (file1 != NULL);
 
-    for(int j = 0; j < num; j++)
+    for(int j = 0; j < num_of_lines; j++)
     {
-        fprintf (file1, "\n%s", buffer_in + *(string_num + j));
+        fprintf (file1, "\n%s", (Text + j) -> Pbegin_line);
     }
 
     fclose (file1);
+    */
 
     return 0;
 }
