@@ -20,11 +20,12 @@ int num_of_strings (char *file_buffer, int buffer_size)
 //-----------------------------------------------------------------------------
 
 // file_size
-int file_total_lenght (FILE *file)
+int file_size (FILE *file)
 {
     struct stat file_stat = {0};
 
     fstat (fileno (file), &file_stat);
+
 
     // ??
     return file_stat.st_size + 1;
@@ -46,17 +47,18 @@ int file_reader (char *file_buffer, int buffer_size, FILE *file)
 int file_printer (struct Line *Text, int num_of_lines) //Close exit file!
 {
     printf ("Cool!");
-    /*
-    FILE   *file1  = fopen ("hamlet1.txt", "w+");
+
+    /*FILE   *file1  = fopen ("hamlet1.txt", "w+");
     assert (file1 != NULL);
 
     for(int j = 0; j < num_of_lines; j++)
     {
-        fprintf (file1, "\n%s", (Text + j) -> Pbegin_line);
+        char *pointline = Text[j].Pbegin_line;
+
+        fprintf (file1, "\n%s", pointline);
     }
 
-    fclose (file1);
-    */
+    fclose (file1); */
 
     return 0;
 }

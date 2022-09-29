@@ -12,10 +12,7 @@ int compare_strings (const void *first_p, const void *second_p)
 
 //-----------------------------------------------------------------------------
 
-
-// separate_lines()
-
-int point_lines_Ctor (char *buffer, int buffer_size, struct Line *Line_p)
+int separate_lines (char *buffer, int buffer_size, struct Line *Line_p)
 {
     int num_line = 0;
 

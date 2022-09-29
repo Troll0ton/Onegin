@@ -16,7 +16,7 @@
 struct Line
 {
 // P?
-    char *Pbegin_line;
+    char *begin_line;
 
     int line_lenght;
 };
@@ -25,7 +25,7 @@ struct Line
 
 int compare_strings  (const void *first_p, const void *second_p);
 
-int point_lines_Ctor (char *buffer, int buffer_size, struct Line *Text);
+int separate_lines (char *buffer, int buffer_size, struct Line *Text);
 
 //-----------------------------------------------------------------------------
 

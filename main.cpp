@@ -8,7 +8,7 @@ int main ()
     FILE   *file  = fopen ("hamlettest.txt", "rb");
     assert (file != NULL);
 
-    int buffer_size = file_total_lenght (file);
+    int buffer_size = file_size (file);
 
     char *file_buffer = (char*) calloc (buffer_size, sizeof (char));
 

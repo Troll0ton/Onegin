@@ -13,13 +13,13 @@
 
 //-----------------------------------------------------------------------------
 
-int num_of_strings    (char *file_buffer, int buffer_size);
+int num_of_strings (char *file_buffer, int buffer_size);
 
-int file_total_lenght (FILE *file);
+int file_size      (FILE *file);
 
-int file_reader       (char *file_buffer, int buffer_size, FILE *file);
+int file_reader    (char *file_buffer, int buffer_size, FILE *file);
 
-int file_printer      (struct Line *Text, int num_of_lines);
+int file_printer   (struct Line *Text, int num_of_lines);
 
 //-----------------------------------------------------------------------------
 
