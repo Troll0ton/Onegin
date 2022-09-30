@@ -15,7 +15,6 @@
 
 struct Line
 {
-// P?
     char *begin_line;
 
     int line_lenght;
@@ -23,9 +22,13 @@ struct Line
 
 //-----------------------------------------------------------------------------
 
-int compare_strings  (const void *first_p, const void *second_p);
+int compare_strings (void *first_p, void *second_p);
 
-int separate_lines (char *buffer, int buffer_size, struct Line *Text);
+int separate_lines  (char *buffer, int buffer_size, struct Line *Text);
+
+void swap_lines     (void* first_pointer, void* second_pointer, size_t size_of_struct);
+
+void bubble_sort    (void* string_array, int n_strings, int compare_strings (void* first_str, void* second_str));
 
 //-----------------------------------------------------------------------------
 

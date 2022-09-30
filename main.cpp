@@ -8,7 +8,7 @@ int main ()
     FILE   *file  = fopen ("hamlettest.txt", "rb");
     assert (file != NULL);
 
-    int buffer_size = file_size (file);
+    int buffer_size = file_size (file) + 1;
 
     char *file_buffer = (char*) calloc (buffer_size, sizeof (char));
 
@@ -20,15 +20,15 @@ int main ()
 
     struct Line *Text = (struct Line*) calloc (num_of_lines, sizeof (struct Line));
 
-    point_lines_Ctor (file_buffer, buffer_size, Text);
+    separate_lines (file_buffer, buffer_size, Text);
 
     //-----------------------------------------------------------------------------
 
-    qsort (Text, num_of_lines, sizeof (struct Line), &compare_strings);
+    bubble_sort ((void*)Text, num_of_lines, &compare_strings);
 
     for(int i = 0; i < num_of_lines; i++)
     {
-        printf ("%s\n", (Text + i) -> Pbegin_line);
+        printf ("%s\n", (Text + i) -> begin_line);
     }
 
     fclose (file);

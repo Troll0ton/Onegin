@@ -1,0 +1,39 @@
+#include "sort.h"
+
+//-----------------------------------------------------------------------------
+
+void swap_lines (void* first_pointer, void* second_pointer, size_t size_of_struct)
+{
+    char *first_string = (struct Line*) first_pointer->begin_line;
+    
+}
+
+//-----------------------------------------------------------------------------
+
+int compare_strings (void *first_pointer, void *second_pointer)
+{
+    struct Line *first_line  = (struct Line*) first_pointer;
+    struct Line *second_line = (struct Line*) second_pointer;
+
+    return strcmp (first_line->begin_line, second_line->begin_line);
+}
+
+//-----------------------------------------------------------------------------
+
+void booble_sort (void* string_array, int n_strings, int compare_strings (void* first_str, void* second_str))
+{
+    for(int sort_step = 0; sort_step < n_strings; sort_step++)
+    {
+        for(int j = sort_step + 1; j < n_strings; j++)
+        {
+            if(compare_strings ((struct Line*) string_array + sort_step, (struct Line*) string_array + j) > 0)
+            {
+                swap_lines ((struct Line*) string_array + sort_step, (struct Line*) string_array + j, sizeof (struct Line));
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+

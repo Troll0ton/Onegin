@@ -1,7 +1,7 @@
-//! @file input_output.h
+//! @file sort.h
 
-#ifndef   INPUT_OUTPUT_H
-#define   INPUT_OUTPUT_H
+#ifndef   SORT_H
+#define   SORT_H
 
 //-----------------------------------------------------------------------------
 
@@ -13,14 +13,13 @@
 
 //-----------------------------------------------------------------------------
 
-int num_of_strings (char *file_buffer, int buffer_size);
+void swap_lines      (void* first_pointer, void* second_pointer, size_t size_of_struct);
 
-int file_size      (FILE *file);
+int compare_strings  (void *first_pointer, void *second_pointer);
 
-int file_reader    (char *file_buffer, int buffer_size, FILE *file);
-
-int file_printer   (struct Line *Text, int num_of_lines);
+void booble_sort     (void* string_array, int n_strings, int compare_strings (void* first_str, void* second_str));
 
 //-----------------------------------------------------------------------------
 
-#endif //INPUT_OUTPUT_H
+#endif //SORT_H
+
