@@ -15,17 +15,22 @@
 
 struct Line
 {
-// P?
-    char *Pbegin_line;
+    char *begin_line;
 
     int line_lenght;
 };
 
 //-----------------------------------------------------------------------------
 
-int compare_strings  (const void *first_p, const void *second_p);
+int compare_strings_begin (void *first_p, void *second_p);
 
-int point_lines_Ctor (char *buffer, int buffer_size, struct Line *Text);
+int compare_strings_end   (void *first_p, void *second_p);
+
+int  lines_separator      (struct File_buffer *File, struct Line *Arr_struct);
+
+void swap_lines           (void* first_pointer, void* second_pointer, size_t size_of_struct);
+
+void bubble_sort          (void* string_array, int n_strings, int compare_strings (void* first_str, void* second_str));
 
 //-----------------------------------------------------------------------------
 

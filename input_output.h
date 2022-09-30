@@ -13,13 +13,26 @@
 
 //-----------------------------------------------------------------------------
 
-int num_of_strings    (char *file_buffer, int buffer_size);
+struct File_buffer
+{
+    char *file_data;
 
-int file_total_lenght (FILE *file);
+    int   file_size;
 
-int file_reader       (char *file_buffer, int buffer_size, FILE *file);
+    int   num_of_lines;
+};
 
-int file_printer      (struct Line *Text, int num_of_lines);
+//-----------------------------------------------------------------------------
+
+void file_handle    (struct File_buffer *File_input, FILE *file);
+
+int  num_of_strings (struct File_buffer *File_input);
+
+int  file_reader    (struct File_buffer *File_input, FILE *file);
+
+int  file_size      (FILE *file);
+
+int  file_printer   (struct Line *Text, int num_of_lines);
 
 //-----------------------------------------------------------------------------
 

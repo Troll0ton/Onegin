@@ -1,36 +1,69 @@
 #include "lines_handle.h"
+#include "input_output.h"
 
 //-----------------------------------------------------------------------------
 
-int compare_strings (const void *first_p, const void *second_p)
+int compare_strings_begin (void *first_p, void *second_p)
 {
     struct Line *first_line  = (struct Line*) first_p;
     struct Line *second_line = (struct Line*) second_p;
 
-    return strcmp (first_line->Pbegin_line, second_line->Pbegin_line);
+    return strcmp ((*first_line).begin_line, (*second_line).begin_line);
 }
 
 //-----------------------------------------------------------------------------
 
+int compare_strings_end (void *first_p, void *second_p)
+{
+    struct Line *first_line  = (struct Line*) first_p;
+    struct Line *second_line = (struct Line*) second_p;
 
-// separate_lines()
+    int min_len = 0;
 
-int point_lines_Ctor (char *buffer, int buffer_size, struct Line *Line_p)
+    char *end_line_1 = (*first_line ).begin_line + (*first_line ).line_lenght - 1;
+    char *end_line_2 = (*second_line).begin_line + (*second_line).line_lenght - 1;
+
+    if((*first_line).line_lenght <= (*second_line).line_lenght)
+    {
+        min_len = (*first_line).line_lenght + 1;
+    }
+
+    else
+    {
+        min_len = (*second_line).line_lenght + 1;
+    }
+
+    for(int i = 0; i < min_len; i++)
+    {
+        if(*end_line_1 != *end_line_2)
+        {
+            return (*end_line_1 - *end_line_2);
+        }
+
+        end_line_1--;
+        end_line_2--;
+    }
+
+    return 0;
+}
+
+//-----------------------------------------------------------------------------
+
+int lines_separator (struct File_buffer *File, struct Line *Arr_struct)
 {
     int num_line = 0;
+    int cur_len  = 0;
 
-    char *line_begin = buffer;
+    int file_len = (*File).file_size;
 
-    int cur_len = 0;
-
-    for(int i = 0; i < buffer_size; i++)
+    for(int i = 0; i < file_len; i++)
     {
-        if(buffer[i] == '\n')
+        if((*File).file_data[i] == '\n')
         {
-            buffer[i] = '\0';
+            (*File).file_data[i] = '\0';
 
-            Line_p[num_line].Pbegin_line = buffer + i - cur_len;
-            // ??
+            Arr_struct[num_line].begin_line  = (*File).file_data + i - cur_len;
+            Arr_struct[num_line].line_lenght = cur_len;
 
             cur_len = 0;
             num_line++;
@@ -42,17 +75,41 @@ int point_lines_Ctor (char *buffer, int buffer_size, struct Line *Line_p)
         }
     }
 
-
-    // ??
-
-    (Line_p + num_line) -> Pbegin_line = (buffer + buffer_size - cur_len);
+    Arr_struct[num_line].begin_line = (*File).file_data +
+                                      (*File).file_size -
+                                      cur_len;
 
     num_line++;
 
-    printf ("%d\n\n", num_line);
-
     return num_line;
+}
 
+//-----------------------------------------------------------------------------
+
+void bubble_sort (void* string_array, int num_of_lines,
+                  int compare_strings_end (void* first_str, void* second_str))
+{
+    for(int i = 0; i < num_of_lines; i++)
+    {
+        for(int j = i + 1; j < num_of_lines; j++)
+        {
+            if(compare_strings_end ((struct Line*) string_array + i, (struct Line*) string_array + j) > 0)
+            {
+                swap_lines ((struct Line*) string_array + i, (struct Line*) string_array + j, sizeof (struct Line));
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+void swap_lines (void* first_pointer, void* second_pointer, size_t size_of_struct)
+{
+    void* tmp_pointer = calloc (1, size_of_struct);
+
+    memcpy (tmp_pointer,    first_pointer,  size_of_struct);
+    memcpy (first_pointer,  second_pointer, size_of_struct);
+    memcpy (second_pointer, tmp_pointer,    size_of_struct);
 }
 
 //-----------------------------------------------------------------------------
