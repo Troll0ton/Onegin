@@ -2,19 +2,35 @@
 
 //-----------------------------------------------------------------------------
 
-int num_of_strings (char *file_buffer, int buffer_size)
+void file_handle (struct File_buffer *File_input)
+{
+    FILE   *file  = fopen ("hamlettest.txt", "rb");
+    assert (file != NULL);
+
+    (*File_input).file_size = file_size (file) + 1;
+
+    file_reader (File_input, file);
+
+    (*File_input).num_of_lines = num_of_strings (File_input);
+}
+
+//-----------------------------------------------------------------------------
+
+int num_of_strings (struct File_buffer *File_input)
 {
     int string_counter = 0;
 
-    for(int i = 0; i < buffer_size; i++)
+    for(int i = 0; i < (*File_input).file_size; i++)
     {
-        if(file_buffer[i] == '\n')
+        if((*File_input).file_data[i] == '\n')
         {
             string_counter++;
         }
     }
 
-    return string_counter + 1;
+    string_counter++;
+
+    return string_counter;
 }
 
 //-----------------------------------------------------------------------------
@@ -30,11 +46,11 @@ int file_size (FILE *file)
 
 //-----------------------------------------------------------------------------
 
-int file_reader (char *file_buffer, int buffer_size, FILE *file)
+int file_reader (struct File_buffer *File_input, FILE *file)
 {
-    fread (file_buffer, sizeof (char), buffer_size, file);
+    fread ((*File_input).file_data, sizeof (char), (*File_input).file_size, file);
 
-    *(file_buffer + buffer_size - 1) = '\0';
+    *((*File_input).file_data + (*File_input).file_size - 1) = '\0';
 
     return 0;
 }

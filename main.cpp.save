@@ -5,22 +5,17 @@
 
 int main ()
 {
-    FILE   *file  = fopen ("hamlettest.txt", "rb");
-    assert (file != NULL);
+    struct File_buffer File_input = (struct File_buffer) calloc (1, sizeof (struct File_buffer));
 
-    int buffer_size = file_size (file) + 1;
+    file_handle (&File_input);
 
-    char *file_buffer = (char*) calloc (buffer_size, sizeof (char));
+    struct Line *Text = (struct Line*) calloc (File_input.num_of_lines, sizeof (struct Line));
 
-    file_reader (file_buffer, buffer_size, file);
+    lines_separator (&File_input, Text);
 
-    int num_of_lines = num_of_strings (file_buffer, buffer_size);
-
-    struct Line *Text = (struct Line*) calloc (num_of_lines, sizeof (struct Line));
-
-    separate_lines (file_buffer, buffer_size, Text);
-
-    bubble_sort (Text, num_of_lines, sizeof (struct Line), &compare_strings);
+    bubble_sort ((void*) Text, num_of_lines, &compare_strings);
+    
+    //-----------------------------------------------------------------------------
 
     for(int i = 0; i < num_of_lines; i++)
     {
