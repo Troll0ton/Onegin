@@ -44,7 +44,7 @@ int compare_strings_end (void *first_p, void *second_p)
         end_line_2--;
     }
 
-    return 0;
+    return SAME_LINES;
 }
 
 //-----------------------------------------------------------------------------
@@ -86,14 +86,14 @@ int lines_separator (struct File_buffer *File, struct Line *Arr_struct)
 
 //-----------------------------------------------------------------------------
 
-void bubble_sort (void* string_array, int num_of_lines,
-                  int compare_strings_end (void* first_str, void* second_str))
+void bubble_sort (void* string_array,  int num_of_lines,
+                  int compare_strings (void* first_str, void* second_str))
 {
     for(int i = 0; i < num_of_lines; i++)
     {
         for(int j = i + 1; j < num_of_lines; j++)
         {
-            if(compare_strings_end ((struct Line*) string_array + i, (struct Line*) string_array + j) > 0)
+            if(compare_strings ((struct Line*) string_array + i, (struct Line*) string_array + j) > 0)
             {
                 swap_lines ((struct Line*) string_array + i, (struct Line*) string_array + j, sizeof (struct Line));
             }

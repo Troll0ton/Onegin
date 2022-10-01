@@ -35,6 +35,27 @@ int num_of_strings (struct File_buffer *File_input)
 
 //-----------------------------------------------------------------------------
 
+void arg_handle (int argc, char* argv[], const struct Option cmd[], int options_range,
+                 void* string_array,     int num_of_lines)
+{
+    assert (argc != 0);
+    assert (argv != NULL);
+    assert (cmd  != NULL);
+
+    for(int arg_num = 1; arg_num < argc; arg_num++)
+    {
+        for(int i = 0; i < options_range; i++)
+        {
+            if (strcmp (argv[arg_num], cmd[i].opt_name) == 0) //or divide options_range into any blocks
+            {
+                bubble_sort (string_array, num_of_lines, cmd[i].func);
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+
 int file_size (FILE *file)
 {
     struct stat file_stat = {0};
@@ -59,15 +80,15 @@ int file_reader (struct File_buffer *File_input, FILE *file)
 
 int file_printer (struct Line *Text, int num_of_lines) //OPEN and CLOSE exit file!
 {
-    FILE   *file1  = fopen ("hamlet1.txt", "w+");
-    assert (file1 != NULL);
+    FILE   *file_out  = fopen (OUT_FILE, "w+");
+    assert (file_out != NULL);
 
     for(int j = 0; j < num_of_lines; j++)
     {
-        fprintf (file1, "\n%s", Text[j].begin_line);
+        fprintf (file_out, "\n%s", Text[j].begin_line);
     }
 
-    fclose (file1);
+    fclose (file_out);
 
     return 0;
 }

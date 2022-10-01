@@ -35,6 +35,27 @@ int num_of_strings (struct File_buffer *File_input)
 
 //-----------------------------------------------------------------------------
 
+void arg_handle (int argc, char* argv[], const struct Option cmd[], int options_range,
+                 void* string_array,     int num_of_lines)
+{
+    assert (argc != 0);
+    assert (argv != NULL);
+    assert (cmd  != NULL);
+
+    for(int arg_num = 1; arg_num < argc; arg_num++)
+    {
+        for(int i = 0; i < options_range; i++)
+        {
+            if (strcmp (argv[arg_num], cmd[i].opt_name) == 0)
+            {
+                bubble_sort (Text, File_input.num_of_lines, cmd[i].func);
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+
 int file_size (FILE *file)
 {
     struct stat file_stat = {0};

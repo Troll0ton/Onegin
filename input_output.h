@@ -13,6 +13,20 @@
 
 //-----------------------------------------------------------------------------
 
+#define DATA_TEXT_FILE "hamlet.txt"
+#define OUT_FILE "hamlet1.txt"
+
+//-----------------------------------------------------------------------------
+
+struct Option
+{
+    char *opt_name;
+
+    int (*func)(void *first_p, void *second_p);
+};
+
+//-----------------------------------------------------------------------------
+
 struct File_buffer
 {
     char *file_data;
@@ -23,6 +37,9 @@ struct File_buffer
 };
 
 //-----------------------------------------------------------------------------
+
+void arg_handle     (int argc, char* argv[], const struct Option cmd[], int options_range,
+                     void* string_array,     int num_of_lines);
 
 void file_handle    (struct File_buffer *File_input, FILE *file);
 
