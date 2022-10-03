@@ -28,30 +28,27 @@ struct Option
 
 //-----------------------------------------------------------------------------
 
-// Text
-struct File_buffer
+struct File
 {
-    char *file_data;
+    char *file_buffer; //
 
-    int   file_size;
+    int   text_size;
 
     int   num_of_lines;
 };
 
 //-----------------------------------------------------------------------------
 
-void arg_handle     (int argc, char* argv[], const struct Option cmd[], int options_range,
-                     void* string_array,     int num_of_lines);
+void handle_args         (int argc, char* argv[], const struct Option cmd[], int options_range,
+                          void* string_array,     int num_of_lines);
 
-void file_handle    (struct File_buffer *File_input, FILE *file);
+int  get_num_of_strs     (struct File *File_input);
 
-int  num_of_strings (struct File_buffer *File_input);
+struct File *file_reader (struct File *File_input, FILE *file);
 
-int  file_reader    (struct File_buffer *File_input, FILE *file);
+int  get_file_size       (FILE *file);
 
-int  file_size      (FILE *file);
-
-int  file_printer   (struct Line *Text, int num_of_lines);
+int  file_printer        (struct Line *Text, int num_of_lines);
 
 //-----------------------------------------------------------------------------
 

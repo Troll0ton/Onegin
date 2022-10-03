@@ -16,8 +16,11 @@ const int num_of_support_args = 2;
 
 const Option cmd_args[] =
 {
-    {"-b", compare_strings_begin},
-    {"-e", compare_strings_end},
+    {"-b",  comp_strs_by_begin},
+    {"-e",  comp_strs_by_end},
+
+    {"-of", set_input_file},
+    {"-if", set_output_file},
 };
 
 //-----------------------------------------------------------------------------

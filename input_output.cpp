@@ -3,34 +3,13 @@
 
 //-----------------------------------------------------------------------------
 
-void file_handle (struct File_buffer *File_input, FILE *file)
-{
-
-    // one function
-    File_input->file_size = file_size (file) + 1;
-
-    // ->
-    // buffer
-    (*File_input).file_data = (char*) calloc ((*File_input).file_size, sizeof (char));
-
-    file_reader (File_input, file);
-
-    // ??
-    // main
-
-    (*File_input).num_of_lines = num_of_strings (File_input);
-}
-
-//-----------------------------------------------------------------------------
-
-// get_num_of_strs
-int num_of_strings (struct File_buffer *File_input)
+int get_num_of_strs (struct File *File_input)
 {
     int string_counter = 0;
 
-    for(int i = 0; i < (*File_input).file_size; i++)
+    for(int pos = 0; pos < File_input->text_size; pos++)
     {
-        if((*File_input).file_data[i] == '\n')
+        if(File_input->file_buffer[pos] == '\n')
         {
             string_counter++;
         }
@@ -43,9 +22,8 @@ int num_of_strings (struct File_buffer *File_input)
 
 //-----------------------------------------------------------------------------
 
-// handle_args
-void arg_handle (int argc,          char* argv[],           const struct Option cmd[],
-                 int options_range, void* string_array,     int          num_of_lines)
+void handle_args (int argc,          char* argv[],       const struct Option cmd[],
+                  int options_range, void* string_array, int          num_of_lines)
 {
     assert (argc != 0);
     assert (argv != NULL);
@@ -55,10 +33,9 @@ void arg_handle (int argc,          char* argv[],           const struct Option 
     {
         for(int i = 0; i < options_range; i++)
         {
-            if(strcmp (argv[arg_num], cmd[i].opt_name) == 0) //or divide options_range into any blocks
+            if(strcmp (argv[arg_num], cmd[i].opt_name) == 0)
             {
-                // ?
-                bubble_sort (string_array, num_of_lines, cmd[i].func);
+                cmd[i].func (string_array, num_of_lines, cmd[i].func, arg_num, argv);
             }
         }
     }
@@ -66,9 +43,7 @@ void arg_handle (int argc,          char* argv[],           const struct Option 
 
 //-----------------------------------------------------------------------------
 
-// get_file_size()
-
-int file_size (FILE *file)
+int get_file_size (FILE *file)
 {
     struct stat file_stat = {0};
 
@@ -79,14 +54,19 @@ int file_size (FILE *file)
 
 //-----------------------------------------------------------------------------
 
-int file_reader (struct File_buffer *File_input, FILE *file)
+struct File *file_reader (FILE *file)
 {
-    fread ((*File_input).file_data, sizeof (char), (*File_input).file_size, file);
+    struct File readed_File = {0};
 
-    // File_input->file_data[File_input->file_size - 1] = '\0';
-    *((*File_input).file_data + (*File_input).file_size - 1) = '\0';
+    readed_File->text_size   = get_file_size (file) + 1;
+    readed_File->file_buffer = (char*) calloc (readed_File->text_size, sizeof (char));
 
-    return 0;
+    fread (readed_File->file_buffer, sizeof (char), readed_File->text_size, file);
+
+    readed_File->file_buffer[readed_File->text_size - 1] = '\0';
+    readed_File->num_of_lines = num_of_strings (readed_File);
+
+    return (&readed_File);
 }
 
 //-----------------------------------------------------------------------------
@@ -96,10 +76,9 @@ int file_printer (struct Line *Text, int num_of_lines) //OPEN and CLOSE exit fil
     FILE   *file_out  = fopen (OUT_FILE, "w+");
     assert (file_out != NULL);
 
-    // i
-    for(int j = 0; j < num_of_lines; j++)
+    for(int pos = 0; pos < num_of_lines; pos++)
     {
-        fprintf (file_out, "\n%s", Text[j].begin_line);
+        fprintf (file_out, "\n%s", Text[pos].begin_line);
     }
 
     fclose (file_out);

@@ -12,9 +12,7 @@ int main (int argc, char *argv[])
     FILE   *file  = fopen (DATA_TEXT_FILE, "rb");  //open input file
     assert (file != NULL);
 
-    struct File_buffer File_input = {0};
-
-    file_handle (&File_input, file);
+    struct File File_input = *(file_reader (&File_input, file));
 
     fclose (file);                                 //close input file
 
