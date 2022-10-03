@@ -5,8 +5,10 @@
 
 void file_handle (struct File_buffer *File_input, FILE *file)
 {
-    (*File_input).file_size = file_size (file) + 1;
+    
+    File_input->file_size = file_size (file) + 1;
 
+    // ->
     (*File_input).file_data = (char*) calloc ((*File_input).file_size, sizeof (char));
 
     file_reader (File_input, file);
@@ -46,9 +48,9 @@ void arg_handle (int argc, char* argv[], const struct Option cmd[], int options_
     {
         for(int i = 0; i < options_range; i++)
         {
-            if (strcmp (argv[arg_num], cmd[i].opt_name) == 0)
+            if (strcmp (argv[arg_num], cmd[i].opt_name) == 0) //or divide options_range into any blocks
             {
-                bubble_sort (Text, File_input.num_of_lines, cmd[i].func);
+                bubble_sort (string_array, num_of_lines, cmd[i].func);
             }
         }
     }
@@ -80,15 +82,15 @@ int file_reader (struct File_buffer *File_input, FILE *file)
 
 int file_printer (struct Line *Text, int num_of_lines) //OPEN and CLOSE exit file!
 {
-    FILE   *file1  = fopen ("hamlet1.txt", "w+");
-    assert (file1 != NULL);
+    FILE   *file_out  = fopen (OUT_FILE, "w+");
+    assert (file_out != NULL);
 
     for(int j = 0; j < num_of_lines; j++)
     {
-        fprintf (file1, "\n%s", Text[j].begin_line);
+        fprintf (file_out, "\n%s", Text[j].begin_line);
     }
 
-    fclose (file1);
+    fclose (file_out);
 
     return 0;
 }

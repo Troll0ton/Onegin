@@ -23,6 +23,8 @@ int compare_strings_end (void *first_p, void *second_p)
     char *end_line_1 = (*first_line ).begin_line + (*first_line ).line_lenght - 1;
     char *end_line_2 = (*second_line).begin_line + (*second_line).line_lenght - 1;
 
+    // min_len  =  min( ..->line_lenght, ...);
+
     if((*first_line).line_lenght <= (*second_line).line_lenght)
     {
         min_len = (*first_line).line_lenght + 1;
@@ -32,6 +34,7 @@ int compare_strings_end (void *first_p, void *second_p)
     {
         min_len = (*second_line).line_lenght + 1;
     }
+
 
     for(int i = 0; i < min_len; i++)
     {
@@ -44,7 +47,7 @@ int compare_strings_end (void *first_p, void *second_p)
         end_line_2--;
     }
 
-    return 0;
+    return SAME_LINES;
 }
 
 //-----------------------------------------------------------------------------
@@ -86,7 +89,7 @@ int lines_separator (struct File_buffer *File, struct Line *Arr_struct)
 
 //-----------------------------------------------------------------------------
 
-void bubble_sort (void* string_array, int num_of_lines,
+void bubble_sort (void* string_array,  int num_of_lines,
                   int compare_strings (void* first_str, void* second_str))
 {
     for(int i = 0; i < num_of_lines; i++)
@@ -105,11 +108,18 @@ void bubble_sort (void* string_array, int num_of_lines,
 
 void swap_lines (void* first_pointer, void* second_pointer, size_t size_of_struct)
 {
+    // char tmp = 0;
+    // (char*)tmp_pointer
+    // for ( i < size_of_struct;
+    
+    // 
     void* tmp_pointer = calloc (1, size_of_struct);
 
     memcpy (tmp_pointer,    first_pointer,  size_of_struct);
     memcpy (first_pointer,  second_pointer, size_of_struct);
     memcpy (second_pointer, tmp_pointer,    size_of_struct);
+
+    free (tmp_pointer);
 }
 
 //-----------------------------------------------------------------------------

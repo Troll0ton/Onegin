@@ -22,11 +22,13 @@ struct Option
 {
     char *opt_name;
 
-    int (*func)(void *first_p, void *second_p);
+    int (*func)(void *first_p, void *second_p);   // func = buble_sort(...)
+                                                  // func = function(...)
 };
 
 //-----------------------------------------------------------------------------
 
+// Text
 struct File_buffer
 {
     char *file_data;
