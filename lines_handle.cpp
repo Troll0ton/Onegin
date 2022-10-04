@@ -21,7 +21,7 @@ int comp_strs_by_end (void *first_p, void *second_p)
     char *end_line_1 = first_line->begin_line  + first_line->line_lenght  - 1;
     char *end_line_2 = second_line->begin_line + second_line->line_lenght - 1;
 
-    int min_len = min (first_line->line_lenght + 1, second_line->line_lenght + 1);
+    int min_len = find_min_len (first_line->line_lenght + 1, second_line->line_lenght + 1);
 
     for(int counter = 0; counter < min_len; counter++)
     {
@@ -39,20 +39,34 @@ int comp_strs_by_end (void *first_p, void *second_p)
 
 //-----------------------------------------------------------------------------
 
-int lines_separator (struct File *Proñessed_file, struct Line *Arr_struct)
+int find_min_len (int first_i, int second_i)
 {
+    if(first_i > second_i)
+    {
+        return first_i;
+    }
+
+    return second_i;
+}
+
+//-----------------------------------------------------------------------------
+
+struct Line *lines_separator (struct File *oper_file)
+{
+    struct Line *Arr_struct = (struct Line*) calloc (oper_file->num_of_lines, sizeof (struct Line));
+
     int num_line = 0;
     int cur_len  = 0;
 
-    int file_len = Proñessed_file->text_size;
+    int file_len = oper_file->text_size;
 
     for(int i = 0; i < file_len; i++)
     {
-        if(Proñessed_file->file_buffer[i] == '\n')
+        if(oper_file->file_buffer[i] == '\n')
         {
-            Proñessed_file->file_buffer[i] = '\0';
+            oper_file->file_buffer[i] = '\0';
 
-            Arr_struct[num_line].begin_line  = Proñessed_file->file_buffer + i - cur_len;
+            Arr_struct[num_line].begin_line  = oper_file->file_buffer + i - cur_len;
             Arr_struct[num_line].line_lenght = cur_len;
 
             cur_len = 0;
@@ -65,13 +79,13 @@ int lines_separator (struct File *Proñessed_file, struct Line *Arr_struct)
         }
     }
 
-    Arr_struct[num_line].begin_line = Proñessed_file->file_buffer +
-                                      Proñessed_file->text_size -
+    Arr_struct[num_line].begin_line = oper_file->file_buffer +
+                                      oper_file->text_size -
                                       cur_len;
 
     num_line++;
 
-    return num_line;
+    return Arr_struct;
 }
 
 //-----------------------------------------------------------------------------
@@ -97,12 +111,22 @@ void swap_lines (void* first_pointer, void* second_pointer, size_t size_of_struc
 {
     char tmp = 0;
 
-    for(int i = 0; i < size_of_struct; i++)
+    for(int i = 0; i < int(size_of_struct); i++)
     {
-       tmp = first_pointer[i];
-       first_pointer[i]  = second_pointer[i];
-       second_pointer[i] = tmp;
+       tmp = *((char*)first_pointer + i);
+       *((char*)first_pointer + i)  = *((char*)second_pointer + i);
+       *((char*)second_pointer + i) = tmp;
     }
 }
 
 //-----------------------------------------------------------------------------
+
+void purificate_mem (struct Line *Text, struct File *File_input)
+{
+    free (Text);
+
+    free (File_input);
+}
+
+//-----------------------------------------------------------------------------
+

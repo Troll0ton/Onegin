@@ -1,31 +1,40 @@
 #include "lines_handle.h"
 #include "input_output.h"
-#include "main.h"
 
 //-----------------------------------------------------------------------------
 
 int main (int argc, char *argv[])
 {
-    // -of -if
+    FILE *file_in  = NULL;
+    FILE *file_out = NULL;
+
+    int (*comp_par)(void *first_p, void *second_p);
+
     assert (argc != 0 && argv != NULL);
 
-    FILE   *file  = fopen (DATA_TEXT_FILE, "rb");  //open input file
-    assert (file != NULL);
+    handle_args (argc,     argv,     cmd_args,  num_of_support_args,
+                 &file_in,  &file_out, comp_par                       );
 
-    struct File File_input = *(file_reader (&File_input, file));
+    if(file_in == NULL || file_out == NULL)
+    {
+        printf ("ERROR: files were specified incorrectly:\n");
 
-    fclose (file);                                 //close input file
+        printf("%p %p", file_in, file_out);
 
-    // ?
-    struct Line *Text = (struct Line*) calloc (File_input.num_of_lines, sizeof (struct Line));
+        return 0;
+    }
 
-    lines_separator (&File_input, Text);
+    struct File *File_input = file_reader (file_in);
 
-    arg_handle (argc, argv, cmd_args, num_of_support_args, (void*) Text, File_input.num_of_lines);
+    struct Line *Text = lines_separator (File_input);
 
-    file_printer (Text, File_input.num_of_lines);
+    bubble_sort ((void*) Text, File_input->num_of_lines, comp_par);
 
-    free (Text);
+    fclose (file_in);
+
+    file_printer (Text, File_input->num_of_lines, file_out);
+
+    purificate_mem (Text, File_input);
 
     return 0;
 }
