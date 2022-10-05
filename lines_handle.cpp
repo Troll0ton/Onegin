@@ -1,5 +1,4 @@
 #include "lines_handle.h"
-#include "input_output.h"
 
 //-----------------------------------------------------------------------------
 
@@ -8,7 +7,20 @@ int comp_strs_by_begin (void *first_p, void *second_p)
     struct Line *first_line  = (struct Line*) first_p;
     struct Line *second_line = (struct Line*) second_p;
 
-    return strcmp (first_line->begin_line, second_line->begin_line);
+    char *begin_line_1 = first_line->begin_line;
+    char *begin_line_2 = second_line->begin_line;
+
+    while(!((*begin_line_1 >= 'A' && *begin_line_1 <= 'Z') || (*begin_line_1 >= 'a' && *begin_line_1 <= 'z')))
+    {
+        begin_line_1++;
+    }
+
+    while(!((*begin_line_2 >= 'A' && *begin_line_2 <= 'Z') || (*begin_line_2 >= 'a' && *begin_line_2 <= 'z')))
+    {
+        begin_line_2++;
+    }
+
+    return strcmp (begin_line_1, begin_line_2);
 }
 
 //-----------------------------------------------------------------------------
@@ -20,6 +32,16 @@ int comp_strs_by_end (void *first_p, void *second_p)
 
     char *end_line_1 = first_line->begin_line  + first_line->line_lenght  - 1;
     char *end_line_2 = second_line->begin_line + second_line->line_lenght - 1;
+
+    while(!((*end_line_1 >= 'A' && *end_line_1 <= 'Z') || (*end_line_1 >= 'a' && *end_line_1 <= 'z')))
+    {
+        end_line_1--;
+    }
+
+    while(!((*end_line_2 >= 'A' && *end_line_2 <= 'Z') || (*end_line_2 >= 'a' && *end_line_2 <= 'z')))
+    {
+        end_line_2--;
+    }
 
     int min_len = find_min_len (first_line->line_lenght + 1, second_line->line_lenght + 1);
 
@@ -51,22 +73,22 @@ int find_min_len (int first_i, int second_i)
 
 //-----------------------------------------------------------------------------
 
-struct Line *lines_separator (struct File *oper_file)
+struct Line *lines_separator (struct File *Oper_file)
 {
-    struct Line *Arr_struct = (struct Line*) calloc (oper_file->num_of_lines, sizeof (struct Line));
+    struct Line *Arr_struct = (struct Line*) calloc (Oper_file->num_of_lines, sizeof (struct Line));
 
     int num_line = 0;
     int cur_len  = 0;
 
-    int file_len = oper_file->text_size;
+    int file_len = Oper_file->text_size;
 
     for(int i = 0; i < file_len; i++)
     {
-        if(oper_file->file_buffer[i] == '\n')
+        if(Oper_file->file_buffer[i] == '\n')
         {
-            oper_file->file_buffer[i] = '\0';
+            Oper_file->file_buffer[i] = '\0';
 
-            Arr_struct[num_line].begin_line  = oper_file->file_buffer + i - cur_len;
+            Arr_struct[num_line].begin_line  = Oper_file->file_buffer + i - cur_len;
             Arr_struct[num_line].line_lenght = cur_len;
 
             cur_len = 0;
@@ -79,8 +101,8 @@ struct Line *lines_separator (struct File *oper_file)
         }
     }
 
-    Arr_struct[num_line].begin_line = oper_file->file_buffer +
-                                      oper_file->text_size -
+    Arr_struct[num_line].begin_line = Oper_file->file_buffer +
+                                      Oper_file->text_size -
                                       cur_len;
 
     num_line++;
@@ -91,7 +113,7 @@ struct Line *lines_separator (struct File *oper_file)
 //-----------------------------------------------------------------------------
 
 void bubble_sort (void* string_array,  int num_of_lines,
-                  int comp_strs (void* first_str, void* second_str))
+                  int   comp_strs (void* first_str, void* second_str))
 {
     for(int i = 0; i < num_of_lines; i++)
     {
@@ -114,6 +136,7 @@ void swap_lines (void* first_pointer, void* second_pointer, size_t size_of_struc
     for(int i = 0; i < int(size_of_struct); i++)
     {
        tmp = *((char*)first_pointer + i);
+
        *((char*)first_pointer + i)  = *((char*)second_pointer + i);
        *((char*)second_pointer + i) = tmp;
     }
@@ -123,9 +146,11 @@ void swap_lines (void* first_pointer, void* second_pointer, size_t size_of_struc
 
 void purificate_mem (struct Line *Text, struct File *File_input)
 {
-    free (Text);
+    free (File_input->file_buffer);
 
     free (File_input);
+
+    free (Text);
 }
 
 //-----------------------------------------------------------------------------

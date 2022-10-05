@@ -17,11 +17,6 @@
 
 //-----------------------------------------------------------------------------
 
-//"hamlet.txt"
-//"hamlet1.txt"
-
-//-----------------------------------------------------------------------------
-
 #define SKIP_ARG 1
 
 //-----------------------------------------------------------------------------
@@ -30,7 +25,7 @@
                       char *argv[],\
                       FILE **file_in,\
                       FILE **file_out,\
-                      int   (*comp_par)(void *first_p, void *second_p)
+                      int   (**comp_par)(void *first_p, void *second_p)
 
 //-----------------------------------------------------------------------------
 
@@ -58,8 +53,9 @@ struct File
 
 //-----------------------------------------------------------------------------
 
-void         handle_args (int   argc,     char *argv[],    const struct Option cmd[],                            int options_range,
-                  FILE **file_in,  FILE **file_out,  int         (*comp_par)(void *first_p, void *second_p)                    );
+void         handle_args (int argc,           char *argv[],    const struct Option cmd[],
+                          int options_range,  FILE **file_in,  FILE **file_out,
+                          int (**comp_par)(void *first_p, void *second_p)                );
 
 int          set_input_file  (CMD_FUNC_ARGS);
 

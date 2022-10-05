@@ -1,11 +1,10 @@
-#include "lines_handle.h"
 #include "input_output.h"
 
 //-----------------------------------------------------------------------------
 
 int set_input_file (CMD_FUNC_ARGS)
 {
-    file_in = fopen ((char*)argv[*arg_num + 1], "rb");
+    *file_in = fopen ((char*) argv[*arg_num + 1], "rb");
 
     return SKIP_ARG;
 }
@@ -14,7 +13,7 @@ int set_input_file (CMD_FUNC_ARGS)
 
 int set_output_file (CMD_FUNC_ARGS)
 {
-    file_out = fopen ((char*)argv[*arg_num + 1], "w+");
+    *file_out = fopen ((char*) argv[*arg_num + 1], "w+");
 
     return SKIP_ARG;
 }
@@ -23,7 +22,7 @@ int set_output_file (CMD_FUNC_ARGS)
 
 int comp_par_begin (CMD_FUNC_ARGS)
 {
-    comp_par = comp_strs_by_begin;
+    *comp_par = comp_strs_by_begin;
 
     return 0;
 }
@@ -32,7 +31,7 @@ int comp_par_begin (CMD_FUNC_ARGS)
 
 int comp_par_end (CMD_FUNC_ARGS)
 {
-    comp_par = comp_strs_by_end;
+    *comp_par = comp_strs_by_end;
 
     return 0;
 }
@@ -58,8 +57,9 @@ int get_num_of_strs (struct File *File_input)
 
 //-----------------------------------------------------------------------------
 
-void handle_args (int   argc,     char *argv[],    const struct Option cmd[],                            int options_range,
-                  FILE **file_in,  FILE **file_out,  int         (*comp_par)(void *first_p, void *second_p)                    )
+void handle_args (int argc,           char *argv[],    const struct Option cmd[],
+                  int options_range,  FILE **file_in,  FILE **file_out,
+                  int (**comp_par)(void *first_p, void *second_p)                )
 {
     assert (argc != 0);
     assert (argv != NULL);
@@ -92,17 +92,17 @@ int get_file_size (FILE *file)
 
 struct File *file_reader (FILE *file)
 {
-    struct File Readed_file = {0};
+    struct File *Readed_file = (struct File*) calloc (1, sizeof (File));
 
-    Readed_file.text_size   = get_file_size (file) + 1;
-    Readed_file.file_buffer = (char*) calloc (Readed_file.text_size, sizeof (char));
+    Readed_file->text_size   = get_file_size (file) + 1;
+    Readed_file->file_buffer = (char*) calloc (Readed_file->text_size, sizeof (char));
 
-    fread (Readed_file.file_buffer, sizeof (char), Readed_file.text_size, file);
+    fread (Readed_file->file_buffer, sizeof (char), Readed_file->text_size, file);
 
-    Readed_file.file_buffer[Readed_file.text_size - 1] = '\0';
-    Readed_file.num_of_lines = get_num_of_strs (&Readed_file);
+    Readed_file->file_buffer[Readed_file->text_size - 1] = '\0';
+    Readed_file->num_of_lines = get_num_of_strs (Readed_file);
 
-    return (&Readed_file);
+    return (Readed_file);
 }
 
 //-----------------------------------------------------------------------------
@@ -113,8 +113,6 @@ int file_printer (struct Line *Text, int num_of_lines, FILE *file_out)
     {
         fprintf (file_out, "\n%s", Text[pos].begin_line);
     }
-
-    fclose (file_out);
 
     return 0;
 }
