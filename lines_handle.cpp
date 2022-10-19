@@ -102,8 +102,8 @@ Line *lines_separator (File *Oper_file)
     }
 
     Array_struct[num_line].begin_line = Oper_file->file_buffer +
-                                      Oper_file->text_size -
-                                      cur_len;
+                                        Oper_file->text_size -
+                                        cur_len;
 
     num_line++;
 
@@ -112,18 +112,19 @@ Line *lines_separator (File *Oper_file)
 
 //-----------------------------------------------------------------------------
 
-void bubble_sort (void* string_array,  int num_of_lines,
+void bubble_sort (void* ptr_array,  int num_of_lines,
                   int   comp_strs (void* first_str, void* second_str))
 {
     size_t size = sizeof (Line);
+    char* pointer = (char*) ptr_array;
 
     for(int i = 0; i < num_of_lines; i++)
     {
         for(int j = i + 1; j < num_of_lines; j++)
         {
-            if(comp_strs (string_array + i * size, string_array + j * size) > 0)
+            if(comp_strs (pointer + i * size, pointer + j * size) > 0)
             {
-                swap_lines (string_array + i * size, string_array + j * size, size);
+                swap_lines (pointer + i * size, pointer + j * size, size);
             }
         }
     }

@@ -102,8 +102,8 @@ Line *lines_separator (File *Oper_file)
     }
 
     Array_struct[num_line].begin_line = Oper_file->file_buffer +
-                                      Oper_file->text_size -
-                                      cur_len;
+                                        Oper_file->text_size -
+                                        cur_len;
 
     num_line++;
 
@@ -112,24 +112,19 @@ Line *lines_separator (File *Oper_file)
 
 //-----------------------------------------------------------------------------
 
-            // (int*) string_array + i
-            //  !=
-            // (Line*) string_array + i
-
-            // int size
-            //  (char*) string_array + i * size
-
-
-void bubble_sort (void* string_array,  int num_of_lines,
+void bubble_sort (void* ptr_array,  int num_of_lines,
                   int   comp_strs (void* first_str, void* second_str))
 {
+    size_t size = sizeof (Line);
+    char* pointer = (char*) ptr_array;
+
     for(int i = 0; i < num_of_lines; i++)
     {
         for(int j = i + 1; j < num_of_lines; j++)
         {
-            if(comp_strs ((Line*) string_array + i, (Line*) string_array + j) > 0)
+            if(comp_strs (pointer + i * size, pointer + j * size) > 0)
             {
-                swap_lines ((Line*) string_array + i, (Line*) string_array + j, sizeof (Line));
+                swap_lines (pointer + i * size, pointer + j * size, size);
             }
         }
     }
@@ -140,17 +135,16 @@ void bubble_sort (void* string_array,  int num_of_lines,
 void swap_lines (void* first_pointer, void* second_pointer, size_t size_of_struct)
 {
     char tmp = 0;
-    
+
     char* c_first  = (char*)first_pointer;
     char* c_second = (char*)second_pointer;
-    // c_first[i] =
 
     for(int i = 0; i < int(size_of_struct); i++)
     {
-       tmp = *((char*)first_pointer + i);
+       tmp = c_first[i];
 
-       *((char*)first_pointer + i)  = *((char*)second_pointer + i);
-       *((char*)second_pointer + i) = tmp;
+       c_first[i]  = c_second[i];
+       c_second[i] = tmp;
     }
 }
 

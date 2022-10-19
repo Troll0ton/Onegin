@@ -24,7 +24,7 @@
 
 #define CMD_FUNC_ARGS int  *arg_num,\
                       char *argv[],\
-                      Arg_handler_res *Arg_par
+                      struct Arg_handler_res *Arg_par
 
 //-----------------------------------------------------------------------------
 
@@ -52,18 +52,27 @@ typedef struct File
 
 //-----------------------------------------------------------------------------
 
-typedef struct ArgHandlerRes
+typedef struct Line
 {
-    FILE *file_in;
-    FILE *file_out;
-    
-    int (*comp_par)(void *first_p, void *second_p) 
-} ArgHandlerRes;
+    char *begin_line;
+
+    int   line_lenght;
+} Line;
 
 //-----------------------------------------------------------------------------
 
-void  handle_args     (int argc, char *argv[], const Option cmd[],
-                       Arg_handler_res *Arg_par                   );
+typedef struct Arg_handler_res
+{
+    FILE *file_in;
+    FILE *file_out;
+
+    int (*comp_par)(void *first_p, void *second_p);
+} Arg_handler_res;
+
+//-----------------------------------------------------------------------------
+
+void  handle_args     (int argc,          char            *argv[], const Option cmd[],
+                       int options_range, Arg_handler_res *Arg_par                    );
 
 int   set_input_file  (CMD_FUNC_ARGS);
 
@@ -79,7 +88,7 @@ File *file_reader     (FILE *file);
 
 int   get_file_size   (FILE *file);
 
-int   file_printer    (Line *Text, int num_of_lines, FILE *file_out);
+int   file_printer    (Line *Text, int num_of_lines, FILE *file);
 
 //-----------------------------------------------------------------------------
 

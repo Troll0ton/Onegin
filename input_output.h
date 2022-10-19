@@ -71,7 +71,7 @@ typedef struct Arg_handler_res
 
 //-----------------------------------------------------------------------------
 
-void handle_args      (int argc,          char            *argv[], const Option cmd[],
+void  handle_args     (int argc,          char            *argv[], const Option cmd[],
                        int options_range, Arg_handler_res *Arg_par                    );
 
 int   set_input_file  (CMD_FUNC_ARGS);
