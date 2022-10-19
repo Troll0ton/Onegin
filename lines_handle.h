@@ -13,29 +13,20 @@
 
 //-----------------------------------------------------------------------------
 
-struct Line
-{
-    char *begin_line;
+int   comp_strs_by_begin (void *first_p, void *second_p);
 
-    int   line_lenght;
-};
+int   min                (int first_i, int second_i);
 
-//-----------------------------------------------------------------------------
+int   comp_strs_by_end   (void *first_p, void *second_p);
 
-int          comp_strs_by_begin (void *first_p, void *second_p);
+Line *lines_separator    (File *Oper_file);
 
-int          find_min_len       (int first_i, int second_i);
+void  swap_lines         (void* first_pointer, void* second_pointer, size_t size_of_struct);
 
-int          comp_strs_by_end   (void *first_p, void *second_p);
+void  bubble_sort        (void* string_array,  int num_of_lines,
+                          int   comp_strs (void* first_str, void* second_str));
 
-struct Line *lines_separator    (struct File *Oper_file);
-
-void         swap_lines         (void* first_pointer, void* second_pointer, size_t size_of_struct);
-
-void         bubble_sort        (void* string_array,  int num_of_lines,
-                                 int   comp_strs (void* first_str, void* second_str));
-
-void         purificate_mem     (struct Line *Text, struct File *File_input);
+void  clear_mem          (Line *Text, File *File_input);
 
 //-----------------------------------------------------------------------------
 

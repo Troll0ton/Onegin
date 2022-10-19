@@ -10,6 +10,7 @@
 #include <string.h>
 #include <assert.h>
 #include <sys\stat.h>
+#include <cctype>
 
 //-----------------------------------------------------------------------------
 
@@ -23,9 +24,7 @@
 
 #define CMD_FUNC_ARGS int  *arg_num,\
                       char *argv[],\
-                      FILE **file_in,\
-                      FILE **file_out,\
-                      int   (**comp_par)(void *first_p, void *second_p)
+                      struct Arg_handler_res *Arg_par
 
 //-----------------------------------------------------------------------------
 
@@ -33,45 +32,63 @@ const int num_of_support_args = 4;
 
 //-----------------------------------------------------------------------------
 
-struct Option
+typedef struct Option
 {
     char *opt_name;
 
     int (*func)(CMD_FUNC_ARGS);
-};
+} Option;
 
 //-----------------------------------------------------------------------------
 
-struct File
+typedef struct File
 {
     char *file_buffer;
 
     int   text_size;
 
     int   num_of_lines;
-};
+} File;
 
 //-----------------------------------------------------------------------------
 
-void         handle_args (int argc,           char *argv[],    const struct Option cmd[],
-                          int options_range,  FILE **file_in,  FILE **file_out,
-                          int (**comp_par)(void *first_p, void *second_p)                );
+typedef struct Line
+{
+    char *begin_line;
 
-int          set_input_file  (CMD_FUNC_ARGS);
+    int   line_lenght;
+} Line;
 
-int          set_output_file (CMD_FUNC_ARGS);
+//-----------------------------------------------------------------------------
 
-int          comp_par_begin  (CMD_FUNC_ARGS);
+typedef struct Arg_handler_res
+{
+    FILE *file_in;
+    FILE *file_out;
 
-int          comp_par_end    (CMD_FUNC_ARGS);
+    int (*comp_par)(void *first_p, void *second_p);
+} Arg_handler_res;
 
-int          get_num_of_strs (struct File *File_input);
+//-----------------------------------------------------------------------------
 
-struct File *file_reader     (FILE *file);
+void handle_args      (int argc,          char            *argv[], const Option cmd[],
+                       int options_range, Arg_handler_res *Arg_par                    );
 
-int          get_file_size   (FILE *file);
+int   set_input_file  (CMD_FUNC_ARGS);
 
-int          file_printer    (struct Line *Text, int num_of_lines, FILE *file_out);
+int   set_output_file (CMD_FUNC_ARGS);
+
+int   comp_par_begin  (CMD_FUNC_ARGS);
+
+int   comp_par_end    (CMD_FUNC_ARGS);
+
+int   get_num_of_strs (File *File_input);
+
+File *file_reader     (FILE *file);
+
+int   get_file_size   (FILE *file);
+
+int   file_printer    (Line *Text, int num_of_lines, FILE *file);
 
 //-----------------------------------------------------------------------------
 

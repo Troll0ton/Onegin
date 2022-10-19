@@ -5,36 +5,29 @@
 
 int main (int argc, char *argv[])
 {
-    assert (argc != 0 && argv != NULL);
+    Arg_handler_res Arg_res_par = {NULL, NULL, NULL};
 
-    FILE *file_in  = NULL;
-    FILE *file_out = NULL;
+    handle_args (argc,                 argv,       cmd_args,
+                 num_of_support_args, &Arg_res_par          );
 
-    int (*comp_par)(void *first_p, void *second_p);
-
-    handle_args (argc,     argv,      cmd_args,  num_of_support_args,
-                 &file_in, &file_out, &comp_par                     );
-
-    if(file_in == NULL || file_out == NULL)
+    if(Arg_res_par.file_in == NULL || Arg_res_par.file_out == NULL)
     {
         printf ("ERROR: files were specified incorrectly:\n");
 
         return 0;
     }
 
-    struct File *File_input = file_reader (file_in);
+    File *File_input = file_reader (Arg_res_par.file_in);
+    Line *Text = lines_separator   (File_input);
 
-    struct Line *Text = lines_separator (File_input);
+    bubble_sort ((void*) Text, File_input->num_of_lines, Arg_res_par.comp_par);
 
-    bubble_sort ((void*) Text, File_input->num_of_lines, comp_par);
+    file_printer (Text, File_input->num_of_lines, Arg_res_par.file_out);
 
-    file_printer (Text, File_input->num_of_lines, file_out);
+    clear_mem (Text, File_input);
 
-    purificate_mem (Text, File_input);
-
-    fclose (file_in);
-
-    fclose (file_out);
+    fclose (Arg_res_par.file_in);
+    fclose (Arg_res_par.file_out);
 
     return 0;
 }
