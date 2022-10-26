@@ -1,9 +1,9 @@
-#include "input_output.h"
+#include "../include/input_output.h"
 
 //-----------------------------------------------------------------------------
 
-void handle_args (int argc, char *argv[], const Option cmd[],
-                  Arg_handler_res *Arg_par                   )
+void handle_args (int argc,          char            *argv[], const Option cmd[],
+                  int options_range, Arg_handler_res *Arg_par                    )
 {
     for(int arg_num = 1; arg_num < argc; arg_num++)
     {
@@ -102,11 +102,11 @@ File *file_reader (FILE *file)
 
 //-----------------------------------------------------------------------------
 
-int file_printer (Line *Text, int num_of_lines, FILE *file_out)
+int file_printer (Line *Text, int num_of_lines, FILE *file)
 {
     for(int pos = 0; pos < num_of_lines; pos++)
     {
-        fprintf (file_out, "\n%s", Text[pos].begin_line);
+        fprintf (file, "\n%s", Text[pos].begin_line);
     }
 
     return 0;

@@ -5,7 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include "input_output.h"
+#include "../include/input_output.h"
 
 //-----------------------------------------------------------------------------
 
@@ -19,14 +19,16 @@ int   min                       (int first_i, int second_i);
 
 int   comp_strs_by_end          (void *first_p, void *second_p);
 
-struct Line *lines_separator    (struct File *Oper_file);
+Line *lines_separator           (File *Oper_file);
 
 void  swap_lines                (void* first_pointer, void* second_pointer, size_t size_of_struct);
 
 void  bubble_sort               (void* ptr_array,  int num_of_lines,
                                  int   comp_strs (void* first_str, void* second_str));
 
-void  clear_mem                 (struct Line *Text, struct File *File_input);
+void  Text_dtor                 (Line *Text);
+
+void  File_dtor                 (File *File_input);
 
 //-----------------------------------------------------------------------------
 

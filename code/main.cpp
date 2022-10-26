@@ -1,5 +1,5 @@
-#include "input_output.h"
-#include "lines_handle.h"
+#include "../include/input_output.h"
+#include "../include/lines_handle.h"
 
 //-----------------------------------------------------------------------------
 
@@ -24,7 +24,8 @@ int main (int argc, char *argv[])
 
     file_printer (Text, File_input->num_of_lines, Arg_res_par.file_out);
 
-    clear_mem (Text, File_input);
+    Text_dtor (Text);
+    File_dtor (File_input);
 
     fclose (Arg_res_par.file_in);
     fclose (Arg_res_par.file_out);
